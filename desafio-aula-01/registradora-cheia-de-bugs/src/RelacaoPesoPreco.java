@@ -14,8 +14,8 @@ public class RelacaoPesoPreco {
         if ("leite".equals(item)) {
             precoTotal = 4.48 * qtd;
         }
-
-        if ("café".equals(item)) {
+        // String cafe estava com acento aqui, retirei
+        if ("cafe".equals(item)) {
             precoTotal = 9.56 * qtd;
         }
         // troquei a String "sanduba" por "sanduiche"
