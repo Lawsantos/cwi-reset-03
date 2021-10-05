@@ -2,9 +2,9 @@ public class RelacaoPesoPreco {
 
     public static double retornaPrecoProduto(String item, int qtd) {
         double precoTotal = 0;
-
+        // o calculo do item "pao" precisava que a qtd * 60 estivesse entre parenteses
         if ("pao".equals(item)) {
-            precoTotal = 12.75 * (qtd * 60 / 1000);
+            precoTotal = 12.75 * (qtd * 60) / 1000;
         }
         // refiz o calculo do precoTotal de ' 96.00 * (qtd / 16)) ' para '(96.00 / 16) * qtd '.
         if ("torta".equals(item)) {

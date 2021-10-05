@@ -7,12 +7,12 @@ public class Registradora {
        segundoBug();
 
        terceiroBug();
-//
-//        quartoBug();
-//
-//        quintoBug();
-//
-//        sextoBug();
+
+       quartoBug();
+
+       quintoBug();
+
+       sextoBug();
     }
 
     private static double registrarItem(String item, int quantidade) {
