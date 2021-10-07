@@ -1,7 +1,8 @@
 public class ReposicaoCozinha {
 
-    static void reporItem(String item) {
-        if ("paes".equals(item)) {
+    public static void reporItem(String item) {
+        // String 'pao' estava como 'paes'
+        if ("pao".equals(item)) {
             ItensPorQuantidade.pao = 3600;
         }
         if ("torta".equals(item)) {
