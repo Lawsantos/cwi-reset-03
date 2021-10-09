@@ -10,19 +10,19 @@ public class Filme {
 
     private Integer avaliacao;
 
-    private Diretor diretor;
+    private Pessoa pessoa;
 
 
-    public Filme(String nome, String descricao, Integer duracao, Integer anoDeLancamento, Integer avaliacao, Diretor diretor) {
+    public Filme(String nome, String descricao, Integer duracao, Integer anoDeLancamento, Integer avaliacao, Pessoa pessoa) {
         this.nome = nome;
         this.descricao = descricao;
         this.duracao = duracao;
         this.anoDeLancamento = anoDeLancamento;
         this.avaliacao = avaliacao;
-        this.diretor = diretor;
+        this.pessoa = pessoa;
     }
     public void reproduzirFilmes(){
-        System.out.println("Nome do filme: " + nome + "\nDescrição: " + descricao + " \nDuração do filme: " + duracao + "\nNome do diretor: " + diretor.getNome());
+        System.out.println("Nome do filme: " + nome + "\nDescrição: " + descricao + " \nDuração do filme: " + duracao + "\nNome do diretor: " + pessoa.getNome());
     }
 
 }
