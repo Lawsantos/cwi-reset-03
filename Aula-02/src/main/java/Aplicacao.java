@@ -1,7 +1,7 @@
 public class Aplicacao {
     public static void main(String[] args) {
 
-        Pessoa diretor = new Pessoa("Law", 29, Genero.MASCULINO);
+        Pessoa diretor = new Pessoa("Laercio", 29, Genero.MASCULINO);
 
         Pessoa ator1 = new Pessoa("Thais", 31, Genero.FEMININO);
 
@@ -11,7 +11,11 @@ public class Aplicacao {
 
         kill.reproduzirFilmes();
 
+        System.out.println("\n");
+
         diretor.imprimiCaracteristicas();
+
+        System.out.println("\n");
 
         ator1.imprimiCaracteristicas();
     }
