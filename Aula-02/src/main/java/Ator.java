@@ -8,13 +8,14 @@ public class Ator {
 
     private Genero genero;
 
-    public Ator(String nome, Integer idade, Integer oscarvencidos) {
+    public Ator(String nome, Integer idade, Integer oscarvencidos, Genero genero) {
         this.nome = nome;
         this.idade = idade;
         this.oscarvencidos = oscarvencidos;
+        this.genero = genero;
     }
 
-    public void imprimirInformacoes(){
+    public void imprimiCaracterisiticas(){
         System.out.println("Nome: " + nome);
         System.out.println("Idade: " + idade);
         System.out.println("Genero:" + genero.getDescricao());

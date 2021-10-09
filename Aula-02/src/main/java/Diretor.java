@@ -14,6 +14,11 @@ public class Diretor {
         this.qtdFilmesDirigidos = qtdFilmesDirigidos;
         this.genero = genero;
     }
+    public void imprimiCaracteristicas(){
+        System.out.println("Nome: " + nome );
+        System.out.println("Idade: " + idade);
+        System.out.println("Genero: " + genero.getDescricao());
+    }
 
     public String getNome() {
         return nome;
