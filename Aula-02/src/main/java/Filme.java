@@ -10,19 +10,25 @@ public class Filme {
 
     private Integer avaliacao;
 
-    private Pessoa pessoa;
+    private Diretor diretor;
 
 
-    public Filme(String nome, String descricao, Integer duracao, Integer anoDeLancamento, Integer avaliacao, Pessoa pessoa) {
+    public Filme(String nome, String descricao, Integer duracao, Integer anoDeLancamento, Integer avaliacao, Diretor diretor) throws AvaliacaoForaDoPadrao {
+
+        if(avaliacao < 1 || avaliacao > 5){
+            throw new AvaliacaoForaDoPadrao();
+        }
+
         this.nome = nome;
         this.descricao = descricao;
         this.duracao = duracao;
         this.anoDeLancamento = anoDeLancamento;
         this.avaliacao = avaliacao;
-        this.pessoa = pessoa;
+        this.diretor = diretor;
     }
+
     public void reproduzirFilmes(){
-        System.out.println("Nome do filme: " + nome + "\nDescrição: " + descricao + " \nDuração do filme: " + duracao + "\nNome do diretor: " + pessoa.getNome());
+        System.out.println("Nome do filme: " + nome + "\nDescrição: " + descricao + " \nDuração do filme: " + duracao + "\nNome do diretor: " + diretor.getNome());
     }
 
 }

@@ -5,11 +5,25 @@ public class Aplicacao {
 
         Ator ator1 = new Ator("Thais", 31, Genero.FEMININO);
 
-        Filme kill = new Filme("Cena de terror", "Pedra",1, 2021, 500, diretor);
+        Filme kill = null;
+        try {
+            kill = new Filme("Cena de terror", "Pedra",1, 2021, 500, diretor);
 
-        Filme selva = new Filme("Selva perigosa", "Filme com muito terror",60, 2019,5, diretor);
+            kill.reproduzirFilmes();
 
-        kill.reproduzirFilmes();
+        } catch (AvaliacaoForaDoPadrao e) {
+
+            System.out.println(e.getMessage() + "\n");
+        }
+
+        try {
+            Filme selva = new Filme("Selva perigosa", "Filme com muito terror",60, 2019,5, diretor);
+            selva.reproduzirFilmes();
+
+        } catch (AvaliacaoForaDoPadrao e) {
+
+            System.out.println(e.getMessage());
+        }
 
         System.out.println("\n");
 
