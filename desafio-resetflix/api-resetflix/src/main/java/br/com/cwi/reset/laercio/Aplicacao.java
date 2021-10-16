@@ -16,7 +16,7 @@ public class Aplicacao {
 
             String nome = "Will Smith";
             LocalDate dataNascimento = LocalDate.of(1979, Month.SEPTEMBER, 25);
-            StatusCarreira statusCarreira = StatusCarreira.APOSENTADO;
+            StatusCarreira statusCarreira = StatusCarreira.EM_ATIVIDADE;
             Integer anoInicioAtividade = 2000;
 
             AtorRequest atorRequest = new AtorRequest(nome, dataNascimento, statusCarreira, anoInicioAtividade);
@@ -30,13 +30,13 @@ public class Aplicacao {
 
             nome = "Laercio Beulcke";
             dataNascimento = LocalDate.of(1979, Month.SEPTEMBER, 25);
-            statusCarreira = StatusCarreira.APOSENTADO;
+            statusCarreira = StatusCarreira.EM_ATIVIDADE;
             anoInicioAtividade = 2000;
             atorRequest = new AtorRequest(nome, dataNascimento, statusCarreira, anoInicioAtividade);
 
             atorService.criarAtor(atorRequest);
 
-            atorService.consultarAtor(1);
+            atorService.listarAtoresEmAtividade("to");
             atorService.consultarAtores();
 
         }catch (Exception e){

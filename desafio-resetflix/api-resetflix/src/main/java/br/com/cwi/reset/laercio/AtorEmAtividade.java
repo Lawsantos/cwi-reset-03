@@ -14,4 +14,7 @@ public class AtorEmAtividade{
         this.dataNascimento = dataNascimento;
     }
 
+    public String getNome() {
+        return nome;
+    }
 }

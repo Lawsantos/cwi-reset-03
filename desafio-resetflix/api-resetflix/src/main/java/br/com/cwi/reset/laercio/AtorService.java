@@ -3,6 +3,7 @@ package br.com.cwi.reset.laercio;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class AtorService {
 
@@ -72,8 +73,30 @@ public class AtorService {
                         ator.getDataNascimento());
                 atoresEmAtividade.add(atorEmAtividade);
             }
+
         }
         return atoresEmAtividade;
+    }
+
+    public List<AtorEmAtividade> listarAtoresEmAtividade(String filtroNome) throws Exception {
+        this.VerificaExistenciaDeAtores();
+
+        List<AtorEmAtividade> atoresEmAtividade = this.listarAtoresEmAtividade();
+        List<AtorEmAtividade> atoresFiltrados = new ArrayList<>();
+
+        for (int i = 0; i < atoresEmAtividade.size(); i++) {
+            AtorEmAtividade atorEmAvitidade = atoresEmAtividade.get(i);
+
+            if(atorEmAvitidade.getNome().toLowerCase(Locale.ROOT).contains(filtroNome.toLowerCase(Locale.ROOT))) {
+                atoresFiltrados.add(atorEmAvitidade);
+            }
+        }
+
+        if(atoresFiltrados.size() == 0) {
+            throw new NaoEncontradoException("Ator não encontrato com o filtro "+ filtroNome +", favor informar outro filtro.");
+        }
+
+        return atoresFiltrados;
     }
 
     public Ator consultarAtor(Integer id) throws Exception {
@@ -102,6 +125,12 @@ public class AtorService {
         }
 
         return fakeDatabase.recuperaAtores();
+    }
+
+    private void VerificaExistenciaDeAtores() throws Exception{
+        if(this.fakeDatabase.recuperaAtores().size() == 0) {
+            throw new NenhumCadastroException("Nenhum ator cadastrado, favor cadastar atores.");
+        }
     }
 
 }
