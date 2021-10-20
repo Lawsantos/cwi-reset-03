@@ -43,9 +43,9 @@ public class AtorController {
         return ResponseEntity.ok(this.atorService.consultarAtores());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id")
     public Ator consultarAtor(Integer id) throws Exception {
 
-        return this.atorService.consultarAtor(id);
+        return atorService.consultarAtor(id);
     }
 }
