@@ -1,4 +1,6 @@
-package br.com.cwi.reset.laercio;
+package br.com.cwi.reset.laercio.request;
+
+import br.com.cwi.reset.laercio.domain.StatusCarreira;
 
 import java.time.LocalDate;
 

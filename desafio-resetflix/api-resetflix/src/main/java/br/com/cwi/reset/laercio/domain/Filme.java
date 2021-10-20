@@ -1,4 +1,4 @@
-package br.com.cwi.reset.laercio;
+package br.com.cwi.reset.laercio.domain;
 
 import java.time.LocalDate;
 import java.util.List;

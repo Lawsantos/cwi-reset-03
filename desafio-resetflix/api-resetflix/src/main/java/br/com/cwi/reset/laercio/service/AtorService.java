@@ -1,4 +1,11 @@
-package br.com.cwi.reset.laercio;
+package br.com.cwi.reset.laercio.service;
+
+import br.com.cwi.reset.laercio.AtorEmAtividade;
+import br.com.cwi.reset.laercio.FakeDatabase;
+import br.com.cwi.reset.laercio.request.AtorRequest;
+import br.com.cwi.reset.laercio.domain.Ator;
+import br.com.cwi.reset.laercio.domain.StatusCarreira;
+import br.com.cwi.reset.laercio.exception.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,6 +19,7 @@ public class AtorService {
     public AtorService(FakeDatabase fakeDatabase) {
 
         this.fakeDatabase = fakeDatabase;
+
     }
 
     public void criarAtor(AtorRequest atorRequest) throws Exception {
@@ -93,7 +101,7 @@ public class AtorService {
         }
 
         if(atoresFiltrados.size() == 0) {
-            throw new NaoEncontradoException("Ator não encontrato com o filtro "+ filtroNome +", favor informar outro filtro.");
+           throw new NaoEncontradoException("Ator não encontrato com o filtro "+ filtroNome +", favor informar outro filtro.");
         }
 
         return atoresFiltrados;
@@ -114,7 +122,6 @@ public class AtorService {
             }
         }
         throw new IdNuloException("Nenhum ator encontrado com o parâmetro id = "+ id +", favor verifique os parâmetros informados.");
-
 
     }
 

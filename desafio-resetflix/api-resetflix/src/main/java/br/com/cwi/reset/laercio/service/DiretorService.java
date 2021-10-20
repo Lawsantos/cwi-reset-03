@@ -1,4 +1,9 @@
-package br.com.cwi.reset.laercio;
+package br.com.cwi.reset.laercio.service;
+
+import br.com.cwi.reset.laercio.FakeDatabase;
+import br.com.cwi.reset.laercio.request.DiretorRequest;
+import br.com.cwi.reset.laercio.domain.Diretor;
+import br.com.cwi.reset.laercio.exception.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,8 +26,8 @@ public class DiretorService {
             throw new NomeESobrenomeException("Deve ser informado no mínimo nome e sobrenome para o diretor.");
         }
 
-        for (int i = 0; i < fakeDatabase.recuperaDiretores().size(); i++){
-            if(fakeDatabase.recuperaDiretores().get(i).getNome().equals(diretorRequest.getNome())){
+        for (int i = 0; i < FakeDatabase.getInstance().recuperaDiretores().size(); i++){
+            if(FakeDatabase.getInstance().recuperaDiretores().get(i).getNome().equals(diretorRequest.getNome())){
                 throw new NomeIgualException("Já existe um diretor cadastrado para o nome " + diretorRequest.getNome()+".");
             }
         }
@@ -57,7 +62,7 @@ public class DiretorService {
         if(fakeDatabase.recuperaDiretores().size() == 0){
             throw new NenhumCadastroException("Nenhum diretor cadastrado, favor cadastar diretores.");
         }
-        return fakeDatabase.recuperaDiretores();
+        return FakeDatabase.getInstance().recuperaDiretores();
     }
 
     public Diretor consultarDiretor(Integer id) throws Exception {
@@ -66,11 +71,11 @@ public class DiretorService {
             throw new CampoNuloException("Campo obrigatório não informado. Favor informar o campo id.");
         }
 
-        for (int i = 0; i < fakeDatabase.recuperaDiretores().size(); i++){
+        for (int i = 0; i < FakeDatabase.getInstance().recuperaDiretores().size(); i++){
 
-            if(fakeDatabase.recuperaDiretores().get(i).getId().equals(id)){
+            if(FakeDatabase.getInstance().recuperaDiretores().get(i).getId().equals(id)){
 
-                return fakeDatabase.recuperaDiretores().get(i);
+                return FakeDatabase.getInstance().recuperaDiretores().get(i);
 
             }
         }

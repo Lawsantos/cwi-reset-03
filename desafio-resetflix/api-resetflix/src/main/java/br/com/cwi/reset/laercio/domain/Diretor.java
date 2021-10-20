@@ -1,26 +1,22 @@
-package br.com.cwi.reset.laercio;
+package br.com.cwi.reset.laercio.domain;
 
 import java.time.LocalDate;
 
-public class Ator {
+public class Diretor{
 
-    private Integer id = 0;
+    private Integer id;
     private String nome;
     private LocalDate dataNascimento;
-    private StatusCarreira statusCarreira;
     private Integer anoInicioAtividade;
 
-    public Ator(Integer id, String nome, LocalDate dataNascimento, StatusCarreira statusCarreira, Integer anoInicioAtividade) {
+    public Diretor(Integer id, String nome, LocalDate dataNascimento, Integer anoInicioAtividade) {
         this.id = id;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
-        this.statusCarreira = statusCarreira;
         this.anoInicioAtividade = anoInicioAtividade;
     }
 
-    public Integer getId() {
-        return id;
-    }
+    public Integer getId() {return id;}
 
     public String getNome() {
         return nome;
@@ -30,12 +26,7 @@ public class Ator {
         return dataNascimento;
     }
 
-    public StatusCarreira getStatusCarreira() {
-        return statusCarreira;
-    }
-
     public Integer getAnoInicioAtividade() {
         return anoInicioAtividade;
     }
-
 }
