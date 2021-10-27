@@ -1,84 +1,62 @@
 package br.com.cwi.reset.laercio.service;
 
 import br.com.cwi.reset.laercio.AtorEmAtividade;
-import br.com.cwi.reset.laercio.FakeDatabase;
-import br.com.cwi.reset.laercio.request.AtorRequest;
-import br.com.cwi.reset.laercio.domain.Ator;
 import br.com.cwi.reset.laercio.domain.StatusCarreira;
 import br.com.cwi.reset.laercio.exception.*;
+import br.com.cwi.reset.laercio.repository.AtorRepository;
+import br.com.cwi.reset.laercio.domain.Ator;
+import br.com.cwi.reset.laercio.request.AtorRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
+@Service
 public class AtorService {
 
-    private FakeDatabase fakeDatabase;
+    @Autowired
+    private AtorRepository atorRepository;
 
-    public AtorService(FakeDatabase fakeDatabase) {
+    public Ator criarAtor(AtorRequest atorRequest) throws Exception {
 
-        this.fakeDatabase = fakeDatabase;
-
-    }
-
-    public void criarAtor(AtorRequest atorRequest) throws Exception {
-
-        if (atorRequest.getNome().equals(null) || atorRequest.getNome().equals("")){
-            throw new CampoNuloException("Campo obrigatório não informado. Favor informar o campo nome.");
-        }
-
-        if(atorRequest.getNome().split(" ").length == 1){
+        if(atorRequest.getNome().split(" ").length < 2){
             throw new NomeESobrenomeException("Deve ser informado no mínimo nome e sobrenome para o ator.");
         }
 
-        for (int i = 0; i < fakeDatabase.recuperaAtores().size(); i++){
-            if(fakeDatabase.recuperaAtores().get(i).getNome().equals(atorRequest.getNome())){
+        Iterable<Ator> atoresBd = atorRepository.findAll();
+        for (Ator atorTemp : atoresBd){
+            if(atorTemp.getNome().equalsIgnoreCase(atorRequest.getNome())){
                 throw new NomeIgualException("Já existe um ator cadastrado para o nome " + atorRequest.getNome()+".");
             }
-        }
-
-        if (atorRequest.getDataNascimento().equals(null) || atorRequest.getDataNascimento().equals("")){
-            throw new CampoNuloException("Campo obrigatório não informado. Favor informar a data de nascimento.");
-        }
-
-        if (atorRequest.getDataNascimento().isAfter(LocalDate.now())){
-            throw new DataNascimentoException("Não é possível cadastrar atores não nascidos.");
-        }
-
-        if(atorRequest.getAnoInicioAtividade().equals("") || atorRequest.getAnoInicioAtividade().equals(null)){
-            throw new CampoNuloException("Campo obrigatório não informado. Favor informar o campo ano de inicio de atividade.");
         }
 
         if (atorRequest.getAnoInicioAtividade() < atorRequest.getDataNascimento().getYear()) {
             throw new AnoAtividadeInvalidoException("Ano de início de atividade inválido para o ator cadastrado.");
         }
 
-        Integer idIncremento = fakeDatabase.recuperaAtores().size() + 1; //id autoincrementado
-
-        Ator ator = new Ator(idIncremento,
+        Ator ator = new Ator(
         atorRequest.getNome(),
         atorRequest.getDataNascimento(),
         atorRequest.getStatusCarreira(),
         atorRequest.getAnoInicioAtividade());
-
-        fakeDatabase.persisteAtor(ator);
+        return atorRepository.save(ator);
     }
 
     public List<AtorEmAtividade> listarAtoresEmAtividade( ) throws Exception {
 
         List<AtorEmAtividade> atoresEmAtividade = new ArrayList<>();
+        Iterable<Ator> atoresListados = atorRepository.findAll();
 
-        if(fakeDatabase.recuperaAtores().size() == 0){
-            throw new NenhumCadastroException("Nenhum ator cadastrado, favor cadastar atores.");
-        }
-
-        for (int i = 0; i < fakeDatabase.recuperaAtores().size(); i++){
-            Ator ator = fakeDatabase.recuperaAtores().get(i);
-            if(ator.getStatusCarreira().equals(StatusCarreira.EM_ATIVIDADE)){
-                AtorEmAtividade atorEmAtividade = new AtorEmAtividade(ator.getId(),
-                        ator.getNome(),
-                        ator.getDataNascimento());
+        for (Ator atorCount : atoresListados){
+            if(atorCount.getStatusCarreira().equals(StatusCarreira.EM_ATIVIDADE)){
+                AtorEmAtividade atorEmAtividade = new AtorEmAtividade(atorCount.getId(),
+                        atorCount.getNome(),
+                        atorCount.getDataNascimento());
                 atoresEmAtividade.add(atorEmAtividade);
             }
 
@@ -93,51 +71,62 @@ public class AtorService {
         List<AtorEmAtividade> atoresFiltrados = new ArrayList<>();
 
         for (int i = 0; i < atoresEmAtividade.size(); i++) {
-            AtorEmAtividade atorEmAvitidade = atoresEmAtividade.get(i);
+            AtorEmAtividade atorEmAtividade = atoresEmAtividade.get(i);
 
-            if(atorEmAvitidade.getNome().toLowerCase(Locale.ROOT).contains(filtroNome.toLowerCase(Locale.ROOT))) {
-                atoresFiltrados.add(atorEmAvitidade);
+            if(atorEmAtividade.getNome().toLowerCase(Locale.ROOT).contains(filtroNome.toLowerCase(Locale.ROOT))) {
+                atoresFiltrados.add(atorEmAtividade);
             }
         }
 
         if(atoresFiltrados.size() == 0) {
            throw new NaoEncontradoException("Ator não encontrato com o filtro "+ filtroNome +", favor informar outro filtro.");
         }
-
+//
         return atoresFiltrados;
     }
 
-    public Ator consultarAtor(Integer id) throws Exception {
+    public Optional<Ator> consultarAtor(Integer id) throws Exception {
 
-        if(id.equals(null)){
+        if(id == null){
             throw new CampoNuloException("Campo obrigatório não informado. Favor informar o campo id.");
         }
 
-        for (int i = 0; i < fakeDatabase.recuperaAtores().size(); i++){
+        if (!atorRepository.existsById(id)) {
+            throw new IdNuloException("Nenhum ator encontrado com o parâmetro id = "+ id +", favor verifique os parâmetros informados.");
 
-            if(fakeDatabase.recuperaAtores().get(i).getId().equals(id)){
-
-                return fakeDatabase.recuperaAtores().get(i);
-
-            }
         }
-        throw new IdNuloException("Nenhum ator encontrado com o parâmetro id = "+ id +", favor verifique os parâmetros informados.");
+
+        return atorRepository.findById(id);
 
     }
 
-    public List<Ator> consultarAtores() throws Exception {
+    public List<Ator> consultarAtores(){
 
-        if(fakeDatabase.recuperaAtores().size() == 0){
-            throw new NenhumCadastroException("Nenhum ator cadastrado, favor cadastar atores.");
-        }
-
-        return fakeDatabase.recuperaAtores();
+        return (List<Ator>) atorRepository.findAll();
     }
 
-    private void VerificaExistenciaDeAtores() throws Exception{
-        if(this.fakeDatabase.recuperaAtores().size() == 0) {
+    private void VerificaExistenciaDeAtores() throws Exception {
+        if(atorRepository.findAll() == null) {
             throw new NenhumCadastroException("Nenhum ator cadastrado, favor cadastar atores.");
         }
     }
 
+    public void removerAtor(Integer id) throws Exception {
+        if (!atorRepository.existsById(id)) {
+            throw new IdNuloException("Nenhum ator encontrado com o parâmetro id = "+ id +", favor verifique os parâmetros informados.");
+
+        }
+        atorRepository.deleteById(id);
+    }
+
+//    public void atualizarAtor(Integer id, AtorRequest atorRequest) throws Exception {
+//        Optional<Ator> ator = atorRepository.findById(id);
+//
+//        if (ator.isPresent()) {
+//            atorRepository.save(ator);
+//        } else {
+//            throw new IdNuloException("Nenhum ator encontrado com o parâmetro id = " + id + ", favor verifique os parâmetros informados.");
+//        }
+//
+//    }
 }

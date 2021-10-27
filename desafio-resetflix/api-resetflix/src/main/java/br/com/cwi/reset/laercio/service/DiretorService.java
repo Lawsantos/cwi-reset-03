@@ -1,86 +1,85 @@
 package br.com.cwi.reset.laercio.service;
 
-import br.com.cwi.reset.laercio.FakeDatabase;
+
+import br.com.cwi.reset.laercio.repository.DiretorRepository;
 import br.com.cwi.reset.laercio.request.DiretorRequest;
 import br.com.cwi.reset.laercio.domain.Diretor;
 import br.com.cwi.reset.laercio.exception.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class DiretorService {
 
-    private FakeDatabase fakeDatabase;
+    @Autowired
+    private DiretorRepository diretorRepository;
 
-    public DiretorService(FakeDatabase fakeDatabase) {
+    public Diretor cadastrarDiretor(DiretorRequest diretorRequest) throws Exception {
 
-        this.fakeDatabase = fakeDatabase;
-    }
-
-    public void cadastrarDiretor(DiretorRequest diretorRequest) throws Exception {
-        if (diretorRequest.getNome().equals(null) || diretorRequest.getNome().equals("")){
-            throw new CampoNuloException("Campo obrigatório não informado. Favor informar o campo nome.");
-        }
 
         if(diretorRequest.getNome().split(" ").length == 1){
             throw new NomeESobrenomeException("Deve ser informado no mínimo nome e sobrenome para o diretor.");
         }
 
-        for (int i = 0; i < FakeDatabase.getInstance().recuperaDiretores().size(); i++){
-            if(FakeDatabase.getInstance().recuperaDiretores().get(i).getNome().equals(diretorRequest.getNome())){
+        Iterable<Diretor> diretoresBd = diretorRepository.findAll();
+        for (Diretor diretorTemp : diretoresBd){
+            if(diretorTemp.getNome().equalsIgnoreCase(diretorRequest.getNome())){
                 throw new NomeIgualException("Já existe um diretor cadastrado para o nome " + diretorRequest.getNome()+".");
             }
         }
 
-        if (diretorRequest.getDataNascimento().equals(null) || diretorRequest.getDataNascimento().equals("")){
-            throw new CampoNuloException("Campo obrigatório não informado. Favor informar a data de nascimento.");
-        }
-
-        if (diretorRequest.getDataNascimento().isAfter(LocalDate.now())){
-            throw new DataNascimentoException("Não é possível cadastrar diretores não nascidos.");
-        }
-
-        if(diretorRequest.getAnoInicioAtividade().equals("") || diretorRequest.getAnoInicioAtividade().equals(null)){
-            throw new CampoNuloException("Campo obrigatório não informado. Favor informar o campo ano de inicio de atividade.");
-        }
-
-        if (diretorRequest.getAnoInicioAtividade() < diretorRequest.getDataNascimento().getYear()) {
+        if (diretorRequest.getAnoInicioAtividade() < diretorRequest.getDataNascimento().getYear() || diretorRequest.getAnoInicioAtividade() > LocalDate.now().getYear()) {
             throw new AnoAtividadeInvalidoException("Ano de início de atividade inválido para o diretor cadastrado.");
         }
 
-        Integer idIncremento = fakeDatabase.recuperaDiretores().size() + 1; //id autoincrementado
-
-        Diretor diretor = new Diretor(idIncremento,
+        Diretor diretor = new Diretor(
                 diretorRequest.getNome(),
                 diretorRequest.getDataNascimento(),
                 diretorRequest.getAnoInicioAtividade());
 
-        fakeDatabase.persisteDiretor(diretor);
-    }
-    public List<Diretor> listarDiretores() throws Exception {
-
-        if(fakeDatabase.recuperaDiretores().size() == 0){
-            throw new NenhumCadastroException("Nenhum diretor cadastrado, favor cadastar diretores.");
-        }
-        return FakeDatabase.getInstance().recuperaDiretores();
+        return diretorRepository.save(diretor);
     }
 
-    public Diretor consultarDiretor(Integer id) throws Exception {
+    public List<Diretor> listarDiretores() {
 
-        if(id.equals(null)){
+       return (List<Diretor>) diretorRepository.findAll();
+    }
+
+    public Optional<Diretor> consultarDiretor(Integer id) throws Exception {
+
+        if(id == null){
             throw new CampoNuloException("Campo obrigatório não informado. Favor informar o campo id.");
         }
 
-        for (int i = 0; i < FakeDatabase.getInstance().recuperaDiretores().size(); i++){
+        if (!diretorRepository.existsById(id)) {
+            throw new IdNuloException("Nenhum diretor encontrado com o parâmetro id = "+ id +", favor verifique os parâmetros informados.");
 
-            if(FakeDatabase.getInstance().recuperaDiretores().get(i).getId().equals(id)){
-
-                return FakeDatabase.getInstance().recuperaDiretores().get(i);
-
-            }
         }
-        throw new IdNuloException("Nenhum diretor encontrado com o parâmetro id = "+ id +", favor verifique os parâmetros informados.");
-
+        return diretorRepository.findById(id);
 
     }
+
+    public void removerDiretor(Integer id) throws Exception {
+
+        if (!diretorRepository.existsById(id)) {
+            throw new IdNuloException("Nenhum diretor encontrado com o parâmetro id = "+ id +", favor verifique os parâmetros informados.");
+
+        }
+        diretorRepository.deleteById(id);
+    }
+
+    //    public void atualizarDiretor(Integer id, DiretorRequest DiretorRequest) throws Exception {
+//        Optional<Diretor> diretor = diretorRepository.findById(id);
+//
+//        if (diretor.isPresent()) {
+//            diretorRepository.save(diretor);
+//        } else {
+//            throw new IdNuloException("Nenhum diretor encontrado com o parâmetro id = " + id + ", favor verifique os parâmetros informados.");
+//        }
+//
+//    }
 }
