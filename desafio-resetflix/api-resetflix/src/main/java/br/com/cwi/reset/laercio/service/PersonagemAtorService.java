@@ -1,26 +1,20 @@
 package br.com.cwi.reset.laercio.service;
 
 import br.com.cwi.reset.laercio.FakeDatabase;
-import br.com.cwi.reset.laercio.domain.Ator;
 import br.com.cwi.reset.laercio.domain.PersonagemAtor;
 import br.com.cwi.reset.laercio.exception.CampoNuloException;
+import br.com.cwi.reset.laercio.exception.NaoEncontradoException;
 import br.com.cwi.reset.laercio.exception.NomeIgualException;
-import br.com.cwi.reset.laercio.request.PersonagemRequest;
+import br.com.cwi.reset.laercio.repository.PersonagemAtorRepository;
+import br.com.cwi.reset.laercio.request.PersonagemAtorRequest;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+@Service
 public class PersonagemAtorService {
 
-    private FakeDatabase fakeDatabase;
-    private AtorService atorService;
-
-    public PersonagemAtorService(FakeDatabase fakeDatabase) {
-        this.fakeDatabase = fakeDatabase;
-//        this.atorService = new AtorService(fakeDatabase);
-    }
+    private PersonagemAtorRepository personagemAtorRepository;
 
 //    public PersonagemAtor cadastrarPersonagemAtor(PersonagemRequest personagemRequest) throws Exception {
 //        new PersonagemRequestCamposObrigatoriosValidator().accept(personagemRequest);
@@ -35,49 +29,60 @@ public class PersonagemAtorService {
 //        return personagemAtor;
 //    }
 
-    public List<PersonagemAtor> consultarPersonagemAtor(String nome) throws Exception {
-        return fakeDatabase.recuperaPersonagens();
-    }
+//    public List<PersonagemAtor> consultarPersonagemAtor(String nome) throws Exception {
+//
+//        if(personagemAtorRepository.findByNome(nome) == null){
+//
+//            throw new NaoEncontradoException("PersonagemAtor não encontrato com o filtro "+ nome +", favor informar outro filtro.");
+//        } else{
+//
+//            if (personagemAtorRepository.findByNome(nome.toLowerCase(Locale.ROOT)).getAtor().contains(nome.toLowerCase(Locale.ROOT))) {
+//                estudioLista.add(estudio);
+//            }
+    //    }
 
-    private void validarPersonagensAtoresFilme(final List<PersonagemRequest> personagens) throws Exception {
-        if (personagens.isEmpty()) {
-            throw new CampoNuloException("Campo obrigatório não informado. Favor informar o personagem.");
-        }
+        //return personagemAtorRepository;
+   // }
 
-        final Set<PersonagemRequest> personagemRequestSet = new HashSet<>();
-
-        for (PersonagemRequest personagemRequest : personagens) {
-//            new PersonagemRequestCamposObrigatoriosValidator().accept(personagemRequest);
-
-            /**
-             * A linha: "if (personagemRequestSet.contains(personagemRequest))"
-             *
-             * Cai na implementação do Set abaixo
-             * Implementação macro
-             * https://docs.oracle.com/javase/7/docs/api/java/util/Set.html#contains(java.lang.Object)
-             *
-             * Que por sua vez chama o equals da classe da chave
-             * Na prática:
-             * PersonagemRequest.equals(PersonagemRequest);
-             * {@link br.com.cwi.reset.josealencar.request.PersonagemRequest#equals(Object)}
-             */
-            if (personagemRequestSet.contains(personagemRequest)) {
-                throw new NomeIgualException("Não é permitido informar o mesmo ator/personagem mais de uma vez para o mesmo filme.");
-            } else {
-                personagemRequestSet.add(personagemRequest);
-            }
-        }
-    }
-
-    public List<PersonagemAtor> cadastrarPersonagensFilme(final List<PersonagemRequest> personagens) throws Exception {
-        validarPersonagensAtoresFilme(personagens);
-
-        final List<PersonagemAtor> personagensAtores = new ArrayList<>();
-
-//        for (PersonagemRequest request : personagens) {
-//            personagensAtores.add(cadastrarPersonagemAtor(request));
+//    private void validarPersonagensAtoresFilme(final List<PersonagemAtorRequest> personagens) throws Exception {
+//        if (personagens.isEmpty()) {
+//            throw new CampoNuloException("Campo obrigatório não informado. Favor informar o personagem.");
 //        }
-
-        return personagensAtores;
-    }
+//
+//        final Set<PersonagemAtorRequest> personagemAtorRequestSet = new HashSet<>();
+//
+//        for (PersonagemAtorRequest personagemAtorRequest : personagens) {
+////            new PersonagemRequestCamposObrigatoriosValidator().accept(personagemRequest);
+//
+//            /**
+//             * A linha: "if (personagemRequestSet.contains(personagemRequest))"
+//             *
+//             * Cai na implementação do Set abaixo
+//             * Implementação macro
+//             * https://docs.oracle.com/javase/7/docs/api/java/util/Set.html#contains(java.lang.Object)
+//             *
+//             * Que por sua vez chama o equals da classe da chave
+//             * Na prática:
+//             * PersonagemRequest.equals(PersonagemRequest);
+//             * {@link br.com.cwi.reset.josealencar.request.PersonagemRequest#equals(Object)}
+//             */
+//            if (personagemAtorRequestSet.contains(personagemAtorRequest)) {
+//                throw new NomeIgualException("Não é permitido informar o mesmo ator/personagem mais de uma vez para o mesmo filme.");
+//            } else {
+//                personagemAtorRequestSet.add(personagemAtorRequest);
+//            }
+//        }
+//    }
+//
+//    public List<PersonagemAtor> cadastrarPersonagensFilme(final List<PersonagemAtorRequest> personagens) throws Exception {
+//        validarPersonagensAtoresFilme(personagens);
+//
+//        final List<PersonagemAtor> personagensAtores = new ArrayList<>();
+//
+////        for (PersonagemRequest request : personagens) {
+////            personagensAtores.add(cadastrarPersonagemAtor(request));
+////        }
+//
+//        return personagensAtores;
+//    }
 }

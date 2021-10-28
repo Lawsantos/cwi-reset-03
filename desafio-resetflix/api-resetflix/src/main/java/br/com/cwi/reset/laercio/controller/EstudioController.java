@@ -24,7 +24,7 @@ public class EstudioController {
         this.estudioService.criarEstudio(estudioRequest);
     }
 
-    @GetMapping
+    @GetMapping(params = "{filtroNome}")
     public List<Estudio> listarEstudios(@RequestParam String filtroNome) throws Exception {
 
         return (List<Estudio>) this.estudioService.consultarEstudios(filtroNome);

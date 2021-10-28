@@ -17,6 +17,9 @@ public class Diretor {
     private LocalDate dataNascimento;
     private Integer anoInicioAtividade;
 
+    public Diretor(){
+
+    }
 
     public Diretor(String nome, LocalDate dataNascimento, Integer anoInicioAtividade) {
         this.nome = nome;

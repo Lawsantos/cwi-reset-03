@@ -2,7 +2,6 @@ package br.com.cwi.reset.laercio.controller;
 
 import br.com.cwi.reset.laercio.AtorEmAtividade;
 import br.com.cwi.reset.laercio.domain.Ator;
-import br.com.cwi.reset.laercio.exception.IdNuloException;
 import br.com.cwi.reset.laercio.request.AtorRequest;
 import br.com.cwi.reset.laercio.service.AtorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +32,10 @@ public class AtorController {
 
     }
 
-//    @PutMapping(path = "/{id}")
-//    public void atualizarAtor(@PathVariable @Valid Integer id, AtorRequest atorRequest) throws Exception {
-//        this.atorService.atualizarAtor(id, atorRequest);
-//    }
+    @PutMapping(path = "/{id}")
+    public void atualizarAtor(@PathVariable @Valid Integer id, AtorRequest atorRequest) throws Exception {
+        this.atorService.atualizarAtor(id, atorRequest);
+    }
 
     @GetMapping
     public List<Ator> consultarAtores() throws Exception {

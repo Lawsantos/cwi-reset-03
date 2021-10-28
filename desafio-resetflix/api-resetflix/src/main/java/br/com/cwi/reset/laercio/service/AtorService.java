@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -119,14 +118,19 @@ public class AtorService {
         atorRepository.deleteById(id);
     }
 
-//    public void atualizarAtor(Integer id, AtorRequest atorRequest) throws Exception {
-//        Optional<Ator> ator = atorRepository.findById(id);
-//
-//        if (ator.isPresent()) {
-//            atorRepository.save(ator);
-//        } else {
-//            throw new IdNuloException("Nenhum ator encontrado com o parâmetro id = " + id + ", favor verifique os parâmetros informados.");
-//        }
-//
-//    }
+    public Ator atualizarAtor(Integer id, AtorRequest atorRequest) throws Exception {
+        Ator ator = new Ator(atorRequest.getNome(), atorRequest.getDataNascimento(), atorRequest.getStatusCarreira(),
+        atorRequest.getAnoInicioAtividade());
+
+        ator.setId(consultarAtor(id).get().getId());
+
+        if (ator != null) {
+            return atorRepository.save(ator);
+        } else {
+            throw new IdNuloException("Nenhum ator encontrado com o parâmetro id = " + id + ", favor verifique os parâmetros informados.");
+        }
+
+    }
+
+
 }

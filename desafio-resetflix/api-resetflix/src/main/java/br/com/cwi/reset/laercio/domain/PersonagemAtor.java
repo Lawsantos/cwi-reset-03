@@ -18,9 +18,6 @@ public class PersonagemAtor {
     @Enumerated(EnumType.STRING)
     private TipoAtuacao tipoAtuacao;
 
-    public PersonagemAtor() {
-    }
-
     public PersonagemAtor(Ator ator, String nomePersonagem, String descricaoPersonagem, TipoAtuacao tipoAtuacao) {
         this.ator = ator;
         this.nomePersonagem = nomePersonagem;

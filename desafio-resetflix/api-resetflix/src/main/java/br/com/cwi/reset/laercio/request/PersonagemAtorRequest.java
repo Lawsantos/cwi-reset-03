@@ -4,13 +4,13 @@ import br.com.cwi.reset.laercio.domain.TipoAtuacao;
 
 import java.util.Objects;
 
-public class PersonagemRequest {
+public class PersonagemAtorRequest {
     private Integer idAtor;
     private String nomePersonagem;
     private String descricaoPersonagem;
     private TipoAtuacao tipoAtuacao;
 
-    public PersonagemRequest(Integer idAtor, String nomePersonagem, String descricaoPersonagem, TipoAtuacao tipoAtuacao) {
+    public PersonagemAtorRequest(Integer idAtor, String nomePersonagem, String descricaoPersonagem, TipoAtuacao tipoAtuacao) {
         this.idAtor = idAtor;
         this.nomePersonagem = nomePersonagem;
         this.descricaoPersonagem = descricaoPersonagem;
@@ -37,7 +37,7 @@ public class PersonagemRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PersonagemRequest that = (PersonagemRequest) o;
+        PersonagemAtorRequest that = (PersonagemAtorRequest) o;
         return Objects.equals(idAtor, that.idAtor) && Objects.equals(nomePersonagem, that.nomePersonagem);
     }
 

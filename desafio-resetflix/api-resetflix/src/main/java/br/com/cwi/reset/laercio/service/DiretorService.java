@@ -21,7 +21,7 @@ public class DiretorService {
     public Diretor cadastrarDiretor(DiretorRequest diretorRequest) throws Exception {
 
 
-        if(diretorRequest.getNome().split(" ").length == 1){
+        if(diretorRequest.getNome().split(" ").length < 2){
             throw new NomeESobrenomeException("Deve ser informado no mínimo nome e sobrenome para o diretor.");
         }
 
@@ -72,14 +72,16 @@ public class DiretorService {
         diretorRepository.deleteById(id);
     }
 
-    //    public void atualizarDiretor(Integer id, DiretorRequest DiretorRequest) throws Exception {
-//        Optional<Diretor> diretor = diretorRepository.findById(id);
-//
-//        if (diretor.isPresent()) {
-//            diretorRepository.save(diretor);
-//        } else {
-//            throw new IdNuloException("Nenhum diretor encontrado com o parâmetro id = " + id + ", favor verifique os parâmetros informados.");
-//        }
-//
-//    }
+    public void atualizarDiretor(Integer id, DiretorRequest diretorRequest) throws Exception {
+        Diretor diretor = new Diretor(diretorRequest.getNome(), diretorRequest.getDataNascimento(), diretorRequest.getAnoInicioAtividade());
+
+        diretor.setId(consultarDiretor(id).get().getId());
+
+        if (diretor != null) {
+            diretorRepository.save(diretor);
+        } else {
+            throw new IdNuloException("Nenhum diretor encontrado com o parâmetro id = " + id + ", favor verifique os parâmetros informados.");
+        }
+
+    }
 }

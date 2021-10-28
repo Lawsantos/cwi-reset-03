@@ -12,9 +12,9 @@ public class FilmeRequest {
     private Integer idDiretor;
     private Integer idEstudio;
     private String resumo;
-    private List<PersonagemRequest> personagens;
+    private List<PersonagemAtorRequest> personagens;
 
-    public FilmeRequest(String nome, Integer anoLancamento, String capaFilme, List<Genero> generos, Integer idDiretor, Integer idEstudio, String resumo, List<PersonagemRequest> personagens) {
+    public FilmeRequest(String nome, Integer anoLancamento, String capaFilme, List<Genero> generos, Integer idDiretor, Integer idEstudio, String resumo, List<PersonagemAtorRequest> personagens) {
         this.nome = nome;
         this.anoLancamento = anoLancamento;
         this.capaFilme = capaFilme;
@@ -53,7 +53,7 @@ public class FilmeRequest {
         return resumo;
     }
 
-    public List<PersonagemRequest> getPersonagens() {
+    public List<PersonagemAtorRequest> getPersonagens() {
         return personagens;
     }
 }

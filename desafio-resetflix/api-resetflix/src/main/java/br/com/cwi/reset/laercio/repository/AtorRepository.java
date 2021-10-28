@@ -14,4 +14,5 @@ public interface AtorRepository extends CrudRepository<Ator, Integer> {
 
     Optional<Ator> findById(Integer id);
 
+
 }
